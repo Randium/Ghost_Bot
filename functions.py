@@ -15,10 +15,8 @@ def add_point(player,csv_file,amount):
             break
 
     if player_found == False:
-        table.append([player,1])
+        table.append([player,amount])
         print('New player! {} has just been added to the party!'.format(player))
-
-    print(table)
 
     # re-write the file
     with open(str(csv_file), 'w') as csvfile:
@@ -38,3 +36,10 @@ def check_money(player_id,csv_file):
 
     # as the command is being counted when checking the balance, one can assume a player will never have 0 messages.
     return 0
+
+def check_for_int(s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False

@@ -4,12 +4,12 @@ import random
 import time
 import asyncio
 
-TOKEN = 'randiums_bot_may_be_a_little_more_structured_since_the_last_update'
+TOKEN = 'NDM2MjYyNjEzMjA3NDgyMzc4.Dbk8vg.9d0zTqhyj_LE47FxD2KEP9UDWQA'
 
 client = discord.Client()
 
 fdata = 'database.csv'
-femoji = 'emoji_data.csv'
+femoji = 'emoji.csv'
 fmarket = 'market_place.csv'
 
 @client.event
@@ -18,7 +18,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    func.add_score(message.author,1,1)
+    func.add_score(message.author.id,1,1,fdata)
 
     # ----------------------------------------
     #               BALANCE
@@ -30,11 +30,13 @@ async def on_message(message):
             if len(message.mentions) > 1:
                 await client.send_message(message.channel,"Whoah, dude! One person at a time, please!")
                 asyncio.sleep(2)
-            await client.send_message(message.channel,"Showing you the results for {}...".format(message.mentions[0]))
+                await client.send_message(message.channel,"Showing you the results for {}...".format(message.mentions[0]))
             target = message.mentions[0]
+            print('{} has requested the balance of {}.'.format(message.author,message.mentions[0]))
+        else:
+            print('{} has requested the balance of themselves.'.format(message.author))
 
-
-        await client.send_message(message.channel,func.make_balance(target,fdata))
+        await client.send_message(message.channel,func.make_balance(target.id,fdata,femoji,target))
         return
 
     # ----------------------------------------
@@ -50,6 +52,9 @@ async def on_message(message):
             if func.isvalid(emoji,femoji):
                 await client.send_message(message.channel,func.make_market_branch(emoji,fmarket))
 
+            return
+
+        await client.send_message(message.channel,func.make_complete_market(femoji,fmarket))
 
 
 @client.event

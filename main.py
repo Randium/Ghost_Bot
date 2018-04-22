@@ -4,7 +4,7 @@ import random
 import time
 import asyncio
 
-TOKEN = 'NDM2MjYyNjEzMjA3NDgyMzc4.Dbk8vg.9d0zTqhyj_LE47FxD2KEP9UDWQA'
+TOKEN = 'lets_hide_that_token'
 
 client = discord.Client()
 

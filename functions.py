@@ -8,7 +8,7 @@ def import_data(csv_file):
     try:
         with open(csv_file, 'r') as csvfile:
             reader = csv.reader(csvfile)
-            table = [[int(e) for e in r] for r in reader]
+            table = [[e for e in r] for r in reader]
         return table
     except FileNotFoundError:
         print("The program called a file that did not exist.")
@@ -16,7 +16,7 @@ def import_data(csv_file):
 
 # Writes a table to a given file, effectively overwriting its previous contents.
 # Returns true if successful, false if unsuccessful.
-def save(table,csv_file)
+def save(table,csv_file):
 
     # write it
     with open(csv_file, 'w') as csvfile:
@@ -33,8 +33,8 @@ def add_score(user_id,spot,amount,fdata):
     score_table = import_data(fdata)
 
     for user in score_table:
-        if user[0] == user_id and spot < len(user):
-            user[spot] = int(user[spot]) amount
+        if int(user[0]) == int(user_id) and spot < len(user):
+            user[spot] = int(user[spot]) + amount
             save(score_table,fdata)
             return True
 
@@ -44,7 +44,7 @@ def add_score(user_id,spot,amount,fdata):
 
 # Takes an emoji as input, and reflects the position of the emoji within the database.
 # Returns 0 if unsuccessful.
-def position(emoji,femoji)
+def position(emoji,femoji):
 
     emoji_table = import_data(femoji)
 
@@ -57,7 +57,7 @@ def position(emoji,femoji)
 
 # When given a player and a spot, this function calls how many the user owns of that emoji.
 # Returns 0 if unsuccessful.
-def count(user_id,spot,fdata)
+def count(user_id,spot,fdata):
 
     score_table = import_data(fdata)
 
@@ -79,9 +79,30 @@ def check_for_int(s):
 
 # Makes the message for the balance command
 # Gives error message if unsuccessful.
-def make_balance(target,fdata):
+def make_balance(target,fdata,femoji,name):
 
-    # TODO
+    score_table = import_data(fdata)
+    emoji_table = import_data(femoji)
+
+    if score_table == [] or emoji_table == []:
+        print("ERROR: Could not load all files required to show the profile of {}.".format(target))
+
+    # Find the wanted user
+    for user in score_table:
+        if int(user[0]) == int(target):
+            msg = '__**BALANCE:**__\n'
+            msg += '\n'
+            for i in range(max(len(emoji_table),len(user)-2)):
+                if int(user[i+2]) != 0:
+                    msg += '{} - {}x\n'.format(emoji_table[i][0],user[i+2])
+            msg += '\n'
+            msg += 'Money: {}\n'.format(user[1])
+            msg += '\n'
+            msg += 'Balance Owner: **{}**'.format(name)
+
+            return msg
+
+    print("ERROR: Could not load the balance of {}.".format(target))
     return "ERROR: Could not load the balance of {}.".format(target)
 
 
@@ -115,3 +136,8 @@ def isvalid(emoji,femoji):
 def make_market_branch(emoji,fmarket):
 
     return "ERROR: Could not print out the market page."
+
+# This function shows an overview of the whole market.
+def make_complete_market(femoji,fmarket):
+
+    return "This is the market! It's kinda empty in here...\n*Hint from Randium: he hasn't finished this part yet...*"

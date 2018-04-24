@@ -15,7 +15,11 @@ fmarket = 'market_place.csv'
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
+    # technically useless cause self is a bot too, tought fetching .bot may be more expensive?
     if message.author == client.user:
+        return
+    #no bots pls
+    if message.author.bot:
         return
 
     func.add_score(message.author.id,1,1,fdata)
@@ -42,13 +46,17 @@ async def on_message(message):
     # ----------------------------------------
     #               MARKET
     # ----------------------------------------
-    if message.content.startswith('!m'):
+    elif message.content.startswith('!m'):
 
         # When a specific emoji has been chosen.
-        if len(message.content.split(' ')) > 1:
+        args = message.content.split(' ')
+        if len(args) > 1: #shoudnt this be 2? or does len actually return count?
 
-            emoji = message.content.split(' ')[1]
-
+            emoji = args[1]
+            amountS = args[2]
+            if (!amountS)
+                amountS = "1"
+            amount = int(amountS)
             if func.isvalid(emoji,femoji):
                 await client.send_message(message.channel,func.make_market_branch(emoji,fmarket))
 

@@ -51,7 +51,7 @@ async def on_message(message):
 
             emoji = args[1]
             amountS = args[2]
-            if !amountS
+            if !amountS:
                 amountS = "1"
             amount = int(amountS)
             if func.isvalid(emoji,femoji):

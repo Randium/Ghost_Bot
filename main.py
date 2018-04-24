@@ -15,9 +15,6 @@ fmarket = 'market_place.csv'
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
-    # technically useless cause self is a bot too, tought fetching .bot may be more expensive?
-    if message.author == client.user:
-        return
     #no bots pls
     if message.author.bot:
         return
@@ -46,7 +43,7 @@ async def on_message(message):
     # ----------------------------------------
     #               MARKET
     # ----------------------------------------
-    elif message.content.startswith('!m'):
+    if message.content.startswith('!m'):
 
         # When a specific emoji has been chosen.
         args = message.content.split(' ')
@@ -54,7 +51,7 @@ async def on_message(message):
 
             emoji = args[1]
             amountS = args[2]
-            if (!amountS)
+            if !amountS
                 amountS = "1"
             amount = int(amountS)
             if func.isvalid(emoji,femoji):

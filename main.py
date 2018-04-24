@@ -23,7 +23,7 @@ async def on_message(message):
     # ----------------------------------------
     #               BALANCE
     # ----------------------------------------
-    if message.content.startswith('!ba'):
+    if message.content.startswith('!b') or message.content.startswith('!$'):
         target = message.author
 
         if len(message.mentions) > 0:

@@ -5,6 +5,7 @@ import time
 import asyncio
 
 TOKEN = 'lets_hide_that_token'
+PREFIX = '!'
 
 client = discord.Client()
 
@@ -23,7 +24,7 @@ async def on_message(message):
     # ----------------------------------------
     #               BALANCE
     # ----------------------------------------
-    if message.content.startswith('!b') or message.content.startswith('!$'):
+    if message.content.startswith(PREFIX + 'b') or message.content.startswith(PREFIX + '$'):
         target = message.author
 
         if len(message.mentions) > 0:
@@ -42,7 +43,7 @@ async def on_message(message):
     # ----------------------------------------
     #               MARKET
     # ----------------------------------------
-    if message.content.startswith('!m'):
+    if message.content.startswith(PREFIX + 'm'):
 
         # When a specific emoji has been chosen.
         if len(message.content.split(' ')) > 1:

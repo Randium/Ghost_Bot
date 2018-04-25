@@ -51,8 +51,8 @@ def add_score(user_id,spot,amount,fdata):
     save(score_table,fdata)
     return True
 
-    print("ERROR: User {} not found.".format(user_id))
-    return False
+    #print("ERROR: User {} not found.".format(user_id))
+    #return False
 
 
 # Takes an emoji as input, and reflects the position of the emoji within the database.

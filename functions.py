@@ -162,7 +162,7 @@ def best_request(emoji,fmarket,number_only):
         if number_only == True:
             return '-'
 
-        print("ERROR: No deal found!")
+        #print("ERROR: No deal found!")
         return None
 
     if number_only == True:
@@ -324,9 +324,9 @@ def make_market_branch(emoji,fmarket):
             i = i + 1
 
     if offers == []:
-        offers = [[best_request(emoji,fmarket,True)-1]]
+        offers = [[max(best_request(emoji,fmarket,True)+1,1)]]
     if requests == []:
-        requests = [[best_offer(emoji,fmarket,True)+1]]
+        requests = [[max(best_offer(emoji,fmarket,True)-1,1)]]
     msg += '\nDo you want to buy an offer? Type `!buy {} {}`!\n'.format(emoji,offers[0][0])
     msg += 'Do you want to sell and fulfill a request? Type `!sell {} {}`!'.format(emoji,requests[0][0])
 
@@ -353,21 +353,25 @@ def make_complete_market(femoji,fmarket):
 # This function removes all deals of a certain player about a certain emoji
 def retract_emoji(target,emoji,fmarket,femoji,fdata):
     market = import_data(fmarket)
+    delete_table = []
 
-    msg_table = []
+    msg = ""
 
     for deal in market:
         if int(deal[3]) == int(target.id) and emoji == deal[0]:
             if deal[1] == 's':
                 add_score(target.id,position(emoji,femoji),1,fdata)
-                msg_table.append("Retracted an offer of {} for {} coins!".format(emoji,deal[2]))
+                msg += "Retracted an offer of {} for {} coins!\n".format(emoji,deal[2])
             elif deal[1] == 'b':
                 add_score(target.id,1,int(deal[2]),fdata)
-                msg_table.append("Retracted a request of {} for {} coins!".format(emoji,deal[2]))
+                msg += "Retracted a request of {} for {} coins!\n".format(emoji,deal[2])
             else:
                 print("Weird! For some reason, I had to retract a different type!")
 
-            market.remove(deal)
+            delete_table.append(deal)
+
+    for deal in delete_table:
+        market.remove(deal)
 
     save(market,fmarket)
-    return msg_table
+    return msg

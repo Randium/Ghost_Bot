@@ -4,7 +4,9 @@ import random
 import time
 import asyncio
 
-TOKEN = 'close_but_not_close_enough'
+
+TOKEN = 'insert_token'
+PREFIX = '!'
 
 client = discord.Client()
 
@@ -23,7 +25,7 @@ async def on_message(message):
     # ----------------------------------------
     #               BALANCE
     # ----------------------------------------
-    if message.content.startswith('!ba'):
+    if message.content.startswith(PREFIX + 'b') or message.content.startswith(PREFIX + '$'):
         target = message.author
 
         if len(message.mentions) > 0:
@@ -42,7 +44,7 @@ async def on_message(message):
     # ----------------------------------------
     #               MARKET
     # ----------------------------------------
-    if message.content.startswith('!m'):
+    if message.content.startswith(PREFIX + 'm'):
 
         # When a specific emoji has been chosen.
         if len(message.content.split(' ')) > 1:

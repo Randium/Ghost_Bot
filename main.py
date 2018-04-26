@@ -172,12 +172,11 @@ async def on_message(message):
                 response = await client.wait_for_message(author = message.author)
 
                 if response.content.startswith('Y') or response.content.startswith('y'):
-                    msg_table = func.retract_emoji(message.author,emoji,fmarket,femoji,fdata)
-
-                    for msg in msg_table:
+                    msg = func.retract_emoji(message.author,emoji,fmarket,femoji,fdata)
+                    if msg != '':
                         await client.send_message(message.channel,msg)
-                        asyncio.sleep(1)
                     await client.send_message(message.channel,"{} has been cleared!".format(emoji))
+                    await asyncio.sleep(1)
                     return
 
                 await client.send_message(message.channel,"Retraction canceled.")
@@ -188,12 +187,11 @@ async def on_message(message):
 
         if response.content.startswith('Y') or response.content.startswith('y'):
             for emoji in func.import_data(femoji):
-                msg_table = func.retract_emoji(message.author,emoji[0],fmarket,femoji,fdata)
-
-                for msg in msg_table:
+                msg = func.retract_emoji(message.author,emoji[0],fmarket,femoji,fdata)
+                if msg != '':
                     await client.send_message(message.channel,msg)
-                    await asyncio.sleep(0.5)
                 await client.send_message(message.channel,"{} has been cleared!".format(emoji[0]))
+                await asyncio.sleep(1)
 
             await client.send_message(message.channel,"All emojis have been cleared!")
             return
@@ -207,7 +205,7 @@ async def on_ready():
     print(client.user.name)
     print(client.user.id)
     print('------')
-    await client.send_message(client.get_channel("436257067573968910"),'Beep boop! I just went online!')
+    await client.send_message(client.get_channel("438359881339109376"),'Beep boop! I just went online!')
 
     i = 0
     while True:

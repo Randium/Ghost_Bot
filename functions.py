@@ -344,7 +344,8 @@ def make_complete_market(femoji,fmarket):
 
     msg = '**PLAYER COINS MARKET**\n\n'
     for emoji in emojis:
-        msg += '{}\t\tBuy: {} coins\t\tSell: {} coins\n'.format(emoji[0],best_offer(emoji[0],fmarket,True),best_request(emoji[0],fmarket,True))
+        if emoji[0] != 'N':
+            msg += '{}\t\tBuy: {} coins\t\tSell: {} coins\n'.format(emoji[0],best_offer(emoji[0],fmarket,True),best_request(emoji[0],fmarket,True))
     msg += '\nTo view the specific market of a specific player coin, please type `!market <emoji>`.'
     return msg
 
@@ -375,3 +376,69 @@ def retract_emoji(target,emoji,fmarket,femoji,fdata):
 
     save(market,fmarket)
     return msg
+
+# This function checks if a player is still alive and should be ignored.
+# Returns true if still alive, false if dead.
+def is_still_alive(target,fdata):
+    score_table = import_data(fdata)
+
+    for user in score_table:
+        if int(user[0]) == int(target.id):
+            return False
+
+    return True
+
+# This function "kills" a player by moving their current living stats into the database.
+# Returns true if succesful, false if the player was already dead.
+def kill(target,fdata,fliving,femoji):
+
+    # This is overkill, as it's being selected beforehand, but I felt something like this could possibly occur.
+    if not is_still_alive(target,fdata):
+        print("Help! {} was already dead!".format(target))
+        return "Uh oh... are you sure you got the right guy? {} already seems to be dead! o_0".format(target), ""
+
+    score_table = import_data(fdata)
+    living_table = import_data(fliving)
+
+    for victim in living_table:
+        if int(target.id) == int(victim[0]):
+
+            new_user = victim
+
+            for emoji in import_data(femoji):
+                if emoji[0] != 'N':
+                    new_user[position(emoji[0],femoji)] = 10
+                else:
+                    new_user[position(emoji[0],femoji)] = 0
+
+            score_table.append(new_user)
+            save(score_table,fdata)
+            return "{} has been killed succesfully!".format(target), new_user[1]
+
+    print("{} wasn't found in the table!")
+    return "Hmmm.... that is weird. I couldn't find {}!\nMake sure the player was signed up on the bot.".format(target), ""
+
+# This functions shows the description of every coin.
+def show_desc(femoji):
+    emojis = import_data(femoji)
+
+    msg = ""
+
+    for emoji in emojis:
+        if emoji[0] != 'N':
+            if len(emoji) == 1:
+                msg += emoji[0]
+                msg += ' - No description available.\n'
+            elif emoji[1] == '':
+                msg += emoji[0]
+                msg += ' - No description available.\n'
+            else:
+                msg += emoji[0]
+                msg += ' - '
+                msg += emoji[1]
+                msg += '\n'
+
+    if msg != '':
+        return msg
+
+    return "**ERROR:** I couldn't find any emojis!"

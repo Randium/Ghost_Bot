@@ -6,9 +6,11 @@ import csv
 def import_data(csv_file):
 
     try:
-        with open(csv_file, 'r') as csvfile:
+        with open(csv_file, 'r', encode = "utf-8") as csvfile:
             reader = csv.reader(csvfile)
             table = [[e for e in r] for r in reader]
+            while [] in table:
+                table.remove([])
         return table
     except FileNotFoundError:
         print("ERROR: The program called a file that did not exist: {} does not appear to exist.".format(csv_file))

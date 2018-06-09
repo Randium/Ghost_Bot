@@ -24,7 +24,8 @@ authorized = [248158876799729664, 140424290171486208]
 @client.event
 async def on_message(message):
     # we do not want the bot to reply to itself
-    if message.author == client.user:
+    #no bots pls
+    if message.author.bot:
         return
 
     if int(message.author.id) not in authorized:
@@ -227,11 +228,15 @@ async def on_message(message):
     if message.content.startswith('!m'):
 
         # When a specific emoji has been chosen.
-        if len(message.content.split(' ')) > 1:
+        args = message.content.split(' ')
+        if len(args) > 1: #shoudnt this be 2? or does len actually return count?
 
-            emoji = message.content.split(' ')[1]
-
-            if func.isvalid(emoji,femoji) == True:
+            emoji = args[1]
+            amountS = args[2]
+            if !amountS:
+                amountS = "1"
+            amount = int(amountS)
+            if func.isvalid(emoji,femoji):
                 await client.send_message(message.channel,func.make_market_branch(emoji,fmarket))
             else:
                 await client.send_message(message.channel,"I am terribly sorry! I couldn't recognize the emoji `{}`.".format(emoji))
